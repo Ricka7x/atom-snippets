@@ -1,0 +1,165 @@
+'.source.js':
+  'Functional Component one liner':
+    'prefix': 'funcomone'
+    'body': """
+      import React from 'react'
+
+      const ${1:Component} = props => <h1>${2:Component}</h1>
+
+      export default ${1:Component}
+    """
+
+  'Functional Component multi liner':
+    'prefix': 'funcommulti'
+    'body': """
+      import React from 'react'
+
+      const ${1:Component} = props => {
+        return (
+          <h1>${2:Component}</h1>
+        )
+      }
+
+      export default Component
+    """
+
+  'Component':
+    'prefix': 'comp'
+    'body': """
+      import React, { Component } from 'react'
+
+      class ${1:Component} extends Component {
+        render () {
+          return (
+            <h1>${2:Component}</h1>
+          )
+        }
+      }
+
+      export default ${1:Component}
+    """
+
+  'Component with Constructor':
+    'prefix': 'compcons'
+    'body': """
+      import React, { Component } from 'react'
+
+      class ${1:Component} extends Component {
+        constructor (props) {
+          super (props)
+
+          this.state = {
+
+          }
+        }
+
+        render () {
+          return (
+            <h1>${2:Component}</h1>
+          )
+        }
+      }
+
+      export default ${1:Component}
+    """
+
+  'Import':
+    'prefix': 'imp'
+    'body': "import ${1:Component} from '${2:Location}'${3}"
+
+
+  'Routes':
+    'prefix': 'routes'
+    'body': """
+      import React from 'react'
+      import { Route, IndexRoute } from 'react-router'
+      import App from './App'
+
+      export default (
+        <Route path='/' component={App}>
+          <IndexRoute component={Home}/>
+          <Route path='*' component={NoMatch}/>
+        </Route>
+      )
+    """
+
+  'Main Reducer':
+    'prefix': 'mainred'
+    'body': """
+      import { combineReducers } from 'redux'
+
+      const rootReducer = combineReducers({
+        state: (state = {}) => state
+      })
+
+      export default rootReducer
+    """
+
+  'Reducer':
+    'prefix': 'reduc'
+    'body': """
+      import { ${1:ACTION} } from '${2:Location}'
+
+      export default (state = {}, action) => {
+        switch (action.type) {
+          case ${1:ACTION}:
+            return {...state, ${3:key}: ${4:value}}
+        }
+        return state
+      }
+    """
+
+  'prefix': 'acthunk'
+  'body': """
+    import axios from 'axios'
+    import { AUTH_USER, AUTH_ERROR, UNAUTH_USER } from './types'
+
+    const ROOT_URL = 'http://localhost:4000'
+
+    export function signInUser ({email, password}) {
+      return dispatch => {
+        axios.post(`${ROOT_URL}/signin`, { email, password })
+        .then(response => {
+          localStorage.setItem('token', response.data.user.token)
+          localStorage.setItem('currentUser', response.data.user.email)
+          dispatch({type: AUTH_USER })
+          Alert.success('You are now logged in')
+          browserHistory.push('/')
+        })
+        .catch(() => {
+          dispatch(authError('bad request'))
+          Alert.error('Make sure username and password are correct')
+        })
+      }
+    }
+  """
+
+  'Index':
+    'prefix': 'indexapp'
+    'body': """
+      import React from 'react'
+      import { render } from 'react-dom'
+      import { Router, browserHistory } from 'react-router'
+      import { Provider } from 'react-redux'
+      import { createStore, applyMiddleware } from 'redux'
+      import reduxThunk from 'redux-thunk'
+      import routes from './routes'
+      import reducers from './reducers'
+      import './index.css'
+
+      const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
+      const store = createStoreWithMiddleware(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+      // const token = localStorage.getItem('token')
+      // const user = localStorage.getItem('currentUser')
+      //
+      // if (token && user) {
+      //   store.dispatch({type: AUTH_USER})
+      // }
+
+      render(
+        <Provider store={store}>
+          <Router history={browserHistory} routes={routes} />
+        </Provider>,
+        document.getElementById('root')
+      )
+    """
