@@ -1,6 +1,6 @@
 '.source.js':
   'Functional Component one liner':
-    'prefix': 'funcomone'
+    'prefix': 'dumbone'
     'body': """
       import React from 'react'
 
@@ -10,7 +10,7 @@
     """
 
   'Functional Component multi liner':
-    'prefix': 'funcommulti'
+    'prefix': 'dumbmulti'
     'body': """
       import React from 'react'
 
@@ -20,7 +20,7 @@
         )
       }
 
-      export default Component
+      export default ${1:Component}
     """
 
   'Component':
@@ -63,6 +63,102 @@
       export default ${1:Component}
     """
 
+
+  'Container':
+    'prefix': 'conta'
+    'body': """
+      import React, { Component } from 'react'
+      import { connect } from 'react-redux'
+      import { ${3:action} } from '${4:location}'
+
+      class ${1:Component} extends Component {
+        constructor (props) {
+          super (props)
+        }
+
+        render () {
+          return (
+            <h1>${2:Component}</h1>
+          )
+        }
+      }
+
+      export default connect(({}) => {
+        return { property: value}
+      }, action )(${1:Component})
+    """
+
+  'HOC':
+    'prefix': 'hoc'
+    'body': """
+      import React, { Component } from 'react'
+
+      export default WrappedComponent => {
+        class ${1:HOC} extends Component {
+          render(){
+            return <WrappedComponent {...this.props}/>
+          }
+        }
+        return ${1:HOC}
+      }
+    """
+
+  'willmount':
+    'prefix': 'willmount'
+    'body': """
+      componentWillMount(){
+        ${1: content}
+      }
+   """
+
+  'didmount':
+    'prefix': 'didmount'
+    'body': """
+      componentDidMount(){
+        ${1: content}
+      }
+   """
+
+   'willreceive':
+     'prefix': 'willreceive'
+     'body': """
+       componentWillReceiveProps(nextProps, nextContext){
+         ${1: content}
+       }
+    """
+
+    'shouldupdate':
+      'prefix': 'shouldupdate'
+      'body': """
+        shouldComponentUpdate(nextProps, nextState, nextContext){
+          ${1: content}
+        }
+     """
+
+     'willupdate':
+       'prefix': 'willupdate'
+       'body': """
+         componentWillUpdate(nextProps, nextState, nextContext){
+           ${1: content}
+         }
+      """
+
+      'didupdate':
+        'prefix': 'didupdate'
+        'body': """
+          componentDidUpdate(nextProps, nextState, nextContext){
+            ${1: content}
+          }
+      """
+
+      'willunmount':
+        'prefix': 'willunmount'
+        'body': """
+          componentWillUnmount(){
+            ${1: content}
+          }
+      """
+
   'Import':
     'prefix': 'imp'
     'body': "import ${1:Component} from '${2:Location}'${3}"
@@ -94,45 +190,6 @@
 
       export default rootReducer
     """
-
-  'Reducer':
-    'prefix': 'reduc'
-    'body': """
-      import { ${1:ACTION} } from '${2:Location}'
-
-      export default (state = {}, action) => {
-        switch (action.type) {
-          case ${1:ACTION}:
-            return {...state, ${3:key}: ${4:value}}
-        }
-        return state
-      }
-    """
-
-  'prefix': 'acthunk'
-  'body': """
-    import axios from 'axios'
-    import { AUTH_USER, AUTH_ERROR, UNAUTH_USER } from './types'
-
-    const ROOT_URL = 'http://localhost:4000'
-
-    export function signInUser ({email, password}) {
-      return dispatch => {
-        axios.post(`${ROOT_URL}/signin`, { email, password })
-        .then(response => {
-          localStorage.setItem('token', response.data.user.token)
-          localStorage.setItem('currentUser', response.data.user.email)
-          dispatch({type: AUTH_USER })
-          Alert.success('You are now logged in')
-          browserHistory.push('/')
-        })
-        .catch(() => {
-          dispatch(authError('bad request'))
-          Alert.error('Make sure username and password are correct')
-        })
-      }
-    }
-  """
 
   'Index':
     'prefix': 'indexapp'
